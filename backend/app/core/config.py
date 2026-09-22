@@ -14,6 +14,19 @@ class Settings(BaseSettings):
         validation_alias="DATABASE_URL",
     )
     cors_origins: list[str] = ["http://localhost:5173", "http://localhost:3000"]
+    secret_key: str = Field(
+        default="change-this-before-production",
+        validation_alias="SECRET_KEY",
+    )
+    jwt_algorithm: str = "HS256"
+    access_token_expire_minutes: int = Field(
+        default=30,
+        validation_alias="ACCESS_TOKEN_EXPIRE_MINUTES",
+    )
+    refresh_token_expire_days: int = Field(
+        default=7,
+        validation_alias="REFRESH_TOKEN_EXPIRE_DAYS",
+    )
 
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -35,4 +48,3 @@ def get_settings() -> Settings:
 
 
 settings = get_settings()
-

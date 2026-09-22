@@ -44,8 +44,22 @@ cp .env.example .env
 uvicorn app.main:app --reload
 ```
 
+## Create First Admin
+
+After PostgreSQL is running and `.env` is configured:
+
+```bash
+python scripts/create_admin.py --email admin@example.com --username admin --full-name "Admin User"
+```
+
 ## Endpoints
 
 - `GET /health` - app health check
 - `GET /health/db` - database connectivity check
+- `POST /api/v1/auth/login` - admin login with username/email and password
+- `POST /api/v1/auth/refresh` - refresh access token
+- `GET /api/v1/auth/me` - protected current admin user check
 
+## Day 2 Auth Notes
+
+The first admin user can be created with `scripts/create_admin.py`. Passwords are stored with `hash_password()` from `app.core.security`, never in plain text.

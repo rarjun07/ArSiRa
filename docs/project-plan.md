@@ -83,6 +83,8 @@ Contact:
 - Implement JWT login API.
 - Add middleware/dependencies for protected routes.
 
+Status: completed with FastAPI auth endpoints, JWT access/refresh tokens, password hashing helpers, admin user model, and protected current-user dependency.
+
 ### Day 3 - CMS Content Models
 
 - Create models for About, Skills, Projects, Blogs, Experience, Testimonials, and Services.
@@ -148,4 +150,3 @@ Contact:
 - Optimize images.
 - Run security checks.
 - Polish UI and fix bugs.
-
