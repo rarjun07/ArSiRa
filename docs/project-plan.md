@@ -106,6 +106,8 @@ Status: completed with protected image uploads, local static file serving, file-
 - Build login page.
 - Build dashboard.
 
+Status: completed with a Vite React admin panel, FastAPI login integration, token persistence, protected current-user loading, logout, and dashboard content navigation.
+
 ### Day 6 - CMS CRUD Screens
 
 - Add admin pages for About, Skills, and Projects.
