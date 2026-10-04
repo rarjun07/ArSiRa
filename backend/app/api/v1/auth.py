@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -16,11 +18,14 @@ from app.schemas.user import UserPublic
 
 router = APIRouter(prefix="/auth", tags=["auth"])
 
+SessionDep = Annotated[AsyncSession, Depends(get_db_session)]
+CurrentAdminDep = Annotated[User, Depends(get_current_admin_user)]
+
 
 @router.post("/login", response_model=TokenResponse)
 async def login(
     credentials: LoginRequest,
-    session: AsyncSession = Depends(get_db_session),
+    session: SessionDep,
 ) -> TokenResponse:
     user = await get_user_by_username_or_email(session, credentials.username)
     if user is None or not verify_password(credentials.password, user.hashed_password):
@@ -44,7 +49,7 @@ async def login(
 @router.post("/refresh", response_model=TokenResponse)
 async def refresh_token(
     token_request: RefreshTokenRequest,
-    session: AsyncSession = Depends(get_db_session),
+    session: SessionDep,
 ) -> TokenResponse:
     payload = decode_token(token_request.refresh_token, expected_token_type="refresh")
     user_id = payload.get("sub")
@@ -78,6 +83,6 @@ async def refresh_token(
 
 @router.get("/me", response_model=UserPublic)
 async def read_current_user(
-    current_user: User = Depends(get_current_admin_user),
+    current_user: CurrentAdminDep,
 ) -> User:
     return current_user

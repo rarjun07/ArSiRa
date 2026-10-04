@@ -90,6 +90,8 @@ Status: completed with FastAPI auth endpoints, JWT access/refresh tokens, passwo
 - Create models for About, Skills, Projects, Blogs, Experience, Testimonials, and Services.
 - Build initial CRUD APIs.
 
+Status: completed with SQLAlchemy models, Pydantic schemas, and FastAPI CRUD endpoints. Public `GET` routes are available for the portfolio frontend, while write/delete routes are protected for the CMS admin.
+
 ### Day 4 - File Upload System
 
 - Create file upload service for images.

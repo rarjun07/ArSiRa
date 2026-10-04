@@ -1,3 +1,5 @@
+from typing import Annotated
+
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -11,8 +13,8 @@ bearer_scheme = HTTPBearer(auto_error=False)
 
 
 async def get_current_admin_user(
-    credentials: HTTPAuthorizationCredentials | None = Depends(bearer_scheme),
-    session: AsyncSession = Depends(get_db_session),
+    credentials: Annotated[HTTPAuthorizationCredentials | None, Depends(bearer_scheme)],
+    session: Annotated[AsyncSession, Depends(get_db_session)],
 ) -> User:
     if credentials is None:
         raise HTTPException(

@@ -59,7 +59,24 @@ python scripts/create_admin.py --email admin@example.com --username admin --full
 - `POST /api/v1/auth/login` - admin login with username/email and password
 - `POST /api/v1/auth/refresh` - refresh access token
 - `GET /api/v1/auth/me` - protected current admin user check
+- `GET`, `PUT /api/v1/about` - portfolio about content
+- `GET`, `POST /api/v1/skills` - skill records
+- `GET`, `PUT`, `DELETE /api/v1/skills/{skill_id}` - single skill record
+- `GET`, `POST /api/v1/projects` - project records
+- `GET`, `PUT`, `DELETE /api/v1/projects/{project_id}` - single project record
+- `GET`, `POST /api/v1/blogs` - blog records
+- `GET`, `PUT`, `DELETE /api/v1/blogs/{blog_id}` - single blog record
+- `GET`, `POST /api/v1/experience` - experience records
+- `GET`, `PUT`, `DELETE /api/v1/experience/{experience_id}` - single experience record
+- `GET`, `POST /api/v1/testimonials` - testimonial records
+- `GET`, `PUT`, `DELETE /api/v1/testimonials/{testimonial_id}` - single testimonial
+- `GET`, `POST /api/v1/services` - service records
+- `GET`, `PUT`, `DELETE /api/v1/services/{service_id}` - single service record
 
 ## Day 2 Auth Notes
 
 The first admin user can be created with `scripts/create_admin.py`. Passwords are stored with `hash_password()` from `app.core.security`, never in plain text.
+
+## Day 3 Content Notes
+
+Content `GET` routes are public so the portfolio frontend can read them. Create, update, and delete routes require a bearer access token from the admin login flow.
