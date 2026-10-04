@@ -27,6 +27,11 @@ class Settings(BaseSettings):
         default=7,
         validation_alias="REFRESH_TOKEN_EXPIRE_DAYS",
     )
+    upload_dir: str = Field(default="uploads", validation_alias="UPLOAD_DIR")
+    public_upload_base_url: str = Field(
+        default="/uploads",
+        validation_alias="PUBLIC_UPLOAD_BASE_URL",
+    )
 
     model_config = SettingsConfigDict(
         env_file=".env",

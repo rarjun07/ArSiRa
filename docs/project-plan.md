@@ -98,6 +98,8 @@ Status: completed with SQLAlchemy models, Pydantic schemas, and FastAPI CRUD end
 - Add upload endpoint.
 - Store media metadata in PostgreSQL.
 
+Status: completed with protected image uploads, local static file serving, file-size and MIME validation, and a PostgreSQL `media` metadata model.
+
 ### Day 5 - Admin Panel Setup
 
 - Initialize React admin panel.
