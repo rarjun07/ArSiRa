@@ -25,8 +25,11 @@ async def main() -> None:
     password_confirmation = getpass("Confirm password: ")
     if password != password_confirmation:
         raise SystemExit("Passwords do not match.")
-    if len(password) < 8:
+    password_length = len(password.encode("utf-8"))
+    if password_length < 8:
         raise SystemExit("Password must be at least 8 characters long.")
+    if password_length > 72:
+        raise SystemExit("Password must be no more than 72 bytes long.")
 
     await create_database_tables()
 
