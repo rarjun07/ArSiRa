@@ -15,6 +15,6 @@ Each day should be completed, tested, committed, and pushed before starting the 
 
 Current status:
 
-- Day 6: React CMS CRUD screens for About, Skills, and Projects
+- Day 7: React CMS CRUD screens for all content areas
 
 See `docs/project-plan.md` for the full adapted plan.

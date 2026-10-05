@@ -119,6 +119,8 @@ Status: completed with authenticated React editors for About, Skills, and Projec
 - Add admin pages for Blogs, Testimonials, Experience, and Services.
 - Improve CMS UI.
 
+Status: completed with authenticated React CRUD editors for Blogs, Testimonials, Experience, and Services, including publish state, dates, highlights, tags, and list management.
+
 ### Day 8 - Portfolio Frontend Setup
 
 - Initialize React portfolio frontend.

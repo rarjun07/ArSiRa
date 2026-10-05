@@ -19,3 +19,4 @@ The default API URL is `http://localhost:8000/api/v1`. Create an admin user with
 - Authenticated dashboard shell for CMS content areas.
 - Token persistence, current-user loading, logout, and error states.
 - CRUD screens for About, Skills, and Projects.
+- CRUD screens for Blogs, Testimonials, Experience, and Services.
