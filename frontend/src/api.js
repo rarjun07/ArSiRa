@@ -1,6 +1,12 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api/v1";
 const TOKEN_KEY = "portfolio_cms_tokens";
 
+export function resolveMediaUrl(value) {
+  if (!value || /^https?:\/\//i.test(value)) return value;
+  const apiOrigin = API_BASE_URL.replace(/\/api\/v1\/?$/, "");
+  return `${apiOrigin}${value.startsWith("/") ? value : `/${value}`}`;
+}
+
 function formatApiError(detail, fallback) {
   if (typeof detail === "string") return detail;
   if (Array.isArray(detail)) {
