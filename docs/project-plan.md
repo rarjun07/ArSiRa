@@ -157,6 +157,8 @@ Status: completed with a PostgreSQL `messages` model, public FastAPI `POST /api/
 - Configure environment variables.
 - Deploy backend and admin panel.
 
+Status: completed with production Dockerfiles for FastAPI and the React CMS, Nginx SPA serving, PostgreSQL health-checked Compose orchestration, persistent uploads, and deployment environment documentation. Actual cloud deployment remains provider-specific.
+
 ### Day 13 - Portfolio Frontend Deployment
 
 - Deploy portfolio frontend.

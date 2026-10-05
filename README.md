@@ -15,6 +15,6 @@ Each day should be completed, tested, committed, and pushed before starting the 
 
 Current status:
 
-- Day 11: Contact form connected to the CMS backend
+- Day 12: Deployment-ready backend and CMS container stack
 
 See `docs/project-plan.md` for the full adapted plan.
