@@ -18,3 +18,4 @@ The default API URL is `http://localhost:8000/api/v1`. Create an admin user with
 - Admin login connected to FastAPI JWT authentication.
 - Authenticated dashboard shell for CMS content areas.
 - Token persistence, current-user loading, logout, and error states.
+- CRUD screens for About, Skills, and Projects.

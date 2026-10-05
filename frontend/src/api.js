@@ -14,6 +14,7 @@ async function request(path, options = {}) {
     throw new Error(payload.detail || "The request could not be completed.");
   }
 
+  if (response.status === 204) return null;
   return response.json();
 }
 
@@ -26,6 +27,27 @@ export function login(username, password) {
 
 export function getCurrentUser(accessToken) {
   return request("/auth/me", {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+}
+
+export function getContent(path, accessToken) {
+  return request(path, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+}
+
+export function saveContent(path, method, payload, accessToken) {
+  return request(path, {
+    method,
+    headers: { Authorization: `Bearer ${accessToken}` },
+    body: JSON.stringify(payload),
+  });
+}
+
+export function deleteContent(path, accessToken) {
+  return request(path, {
+    method: "DELETE",
     headers: { Authorization: `Bearer ${accessToken}` },
   });
 }

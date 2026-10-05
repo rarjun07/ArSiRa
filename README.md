@@ -15,6 +15,6 @@ Each day should be completed, tested, committed, and pushed before starting the 
 
 Current status:
 
-- Day 5: React admin panel with login and dashboard
+- Day 6: React CMS CRUD screens for About, Skills, and Projects
 
 See `docs/project-plan.md` for the full adapted plan.

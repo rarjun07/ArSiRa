@@ -112,6 +112,8 @@ Status: completed with a Vite React admin panel, FastAPI login integration, toke
 
 - Add admin pages for About, Skills, and Projects.
 
+Status: completed with authenticated React editors for About, Skills, and Projects. About supports upsert; Skills and Projects support list, create, update, and delete workflows.
+
 ### Day 7 - Remaining CMS Pages
 
 - Add admin pages for Blogs, Testimonials, Experience, and Services.
