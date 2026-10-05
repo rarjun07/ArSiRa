@@ -57,6 +57,7 @@ python scripts/create_admin.py --email admin@example.com --username admin --full
 - `GET /health` - app health check
 - `GET /health/db` - database connectivity check
 - `POST /api/v1/upload/image` - protected image upload
+- `POST /api/v1/contact` - public contact message submission
 - `POST /api/v1/auth/login` - admin login with username/email and password
 - `POST /api/v1/auth/refresh` - refresh access token
 - `GET /api/v1/auth/me` - protected current admin user check

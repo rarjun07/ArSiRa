@@ -9,4 +9,4 @@ npm install
 npm run dev
 ```
 
-The public site loads About, Skills, Projects, Blogs, Testimonials, and Experience from the FastAPI content APIs. If the API is unavailable, it displays representative fallback content while preserving the page layout.
+The public site loads About, Skills, Projects, Blogs, Testimonials, and Experience from the FastAPI content APIs. Its contact form submits to `POST /api/v1/contact`. If the API is unavailable, it displays representative fallback content while preserving the page layout.

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPortfolioContent } from "./api";
+import { getPortfolioContent, submitContact } from "./api";
 
 const fallbackProjects = [
   { title: "Quiz Management Platform", type: "Product engineering", description: "A focused assessment workflow that keeps authoring, attempts, and results in one place.", color: "coral" },
@@ -13,6 +13,15 @@ const fallbackTestimonials = [{ name: "A thoughtful collaborator", quote: "The b
 const fallbackExperience = [{ title: "Python Fullstack Developer Intern", company: "Independent project studio", start_date: "2026", end_date: "Present", description: "Building a CMS-powered portfolio with FastAPI, React, and PostgreSQL." }];
 
 function Arrow() { return <span aria-hidden="true">↗</span>; }
+
+function ContactForm() {
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
+  const [status, setStatus] = useState({ type: "", text: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  function update(event) { setForm({ ...form, [event.target.name]: event.target.value }); }
+  async function submit(event) { event.preventDefault(); setStatus({ type: "", text: "" }); setIsSubmitting(true); try { const result = await submitContact(form); setStatus({ type: "success", text: result.detail }); setForm({ name: "", email: "", subject: "", message: "" }); } catch (error) { setStatus({ type: "error", text: error.message }); } finally { setIsSubmitting(false); } }
+  return <form className="contact-form" onSubmit={submit}><div className="contact-fields"><label><span>Name</span><input name="name" required minLength="2" value={form.name} onChange={update} /></label><label><span>Email</span><input name="email" type="email" required value={form.email} onChange={update} /></label></div><label><span>Subject</span><input name="subject" required minLength="2" value={form.subject} onChange={update} /></label><label><span>Message</span><textarea name="message" required minLength="10" rows="5" value={form.message} onChange={update} /></label><div className="contact-form-footer"><button className="button button-dark" disabled={isSubmitting} type="submit">{isSubmitting ? "Sending..." : "Send message"} <Arrow /></button>{status.text && <p className={status.type === "success" ? "form-success" : "form-error"} role="status">{status.text}</p>}</div></form>;
+}
 
 export default function App() {
   const [content, setContent] = useState({ about: null, skills: [], projects: [], blogs: [], testimonials: [], experience: [] });
@@ -43,7 +52,7 @@ export default function App() {
       <section className="journal-section" id="journal"><div className="section-intro"><p className="eyebrow">From the journal</p><h2>Notes from<br /><em>the work.</em></h2></div><div className="journal-grid">{blogs.slice(0, 3).map((blog) => <article className="journal-card" key={blog.title}><p className="project-type">{blog.tags?.[0] || "Building in public"}</p><h3>{blog.title}</h3><p>{blog.excerpt}</p><a href="#contact">Read more <Arrow /></a></article>)}</div></section>
       <section className="timeline-section"><div className="section-intro"><p className="eyebrow">Experience</p><h2>A timeline<br /><em>in progress.</em></h2></div><div className="timeline-list">{experience.slice(0, 4).map((item) => <article className="timeline-item" key={`${item.company}-${item.title}`}><div className="timeline-date">{item.start_date}<br />{item.end_date || "Present"}</div><div><h3>{item.title}</h3><p className="timeline-company">{item.company}{item.location ? ` · ${item.location}` : ""}</p><p>{item.description}</p></div></article>)}</div></section>
       <section className="testimonial-section"><p className="eyebrow">A good word</p><blockquote>“{testimonials[0].quote}”</blockquote><p className="quote-author">{testimonials[0].name}{testimonials[0].role ? ` · ${testimonials[0].role}` : ""}</p></section>
-      <section className="contact-section" id="contact"><p className="eyebrow">Have a project in mind?</p><h2>Let&apos;s make<br /><em>something useful.</em></h2><a className="contact-link" href="mailto:hello@arjunsair.dev">hello@arjunsair.dev <Arrow /></a></section>
+      <section className="contact-section" id="contact"><div className="contact-heading"><p className="eyebrow">Have a project in mind?</p><h2>Let&apos;s make<br /><em>something useful.</em></h2></div><ContactForm /></section>
     </main>
     <footer className="site-footer"><span>© 2026 Arjun Sair</span><span>{loadError || "Content managed with Portfolio CMS."}</span><a href="#top">Back to top ↑</a></footer>
   </div>;

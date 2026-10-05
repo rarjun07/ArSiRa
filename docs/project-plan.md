@@ -149,6 +149,8 @@ Status: completed with CMS-backed Blog, Testimonials, and Experience sections on
 - Build contact form UI.
 - Connect contact form to `POST /contact`.
 
+Status: completed with a PostgreSQL `messages` model, public FastAPI `POST /api/v1/contact` endpoint, and a responsive portfolio contact form with validation and success/error states.
+
 ### Day 12 - Backend + CMS Deployment
 
 - Prepare backend for deployment.

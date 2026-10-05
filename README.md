@@ -15,6 +15,6 @@ Each day should be completed, tested, committed, and pushed before starting the 
 
 Current status:
 
-- Day 10: Public Blog, Testimonials, and Experience sections
+- Day 11: Contact form connected to the CMS backend
 
 See `docs/project-plan.md` for the full adapted plan.
