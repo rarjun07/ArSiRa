@@ -9,4 +9,4 @@ npm install
 npm run dev
 ```
 
-The public site is intentionally using representative content during Day 8. Day 9 will connect these sections to the FastAPI content APIs.
+The public site loads About, Skills, and Projects from the FastAPI content APIs. If the API is unavailable, it displays representative fallback content while preserving the page layout.

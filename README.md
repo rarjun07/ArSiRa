@@ -15,6 +15,6 @@ Each day should be completed, tested, committed, and pushed before starting the 
 
 Current status:
 
-- Day 8: React portfolio website with Tailwind CSS
+- Day 9: Portfolio connected to CMS content APIs
 
 See `docs/project-plan.md` for the full adapted plan.
