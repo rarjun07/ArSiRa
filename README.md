@@ -15,6 +15,6 @@ Each day should be completed, tested, committed, and pushed before starting the 
 
 Current status:
 
-- Day 9: Portfolio connected to CMS content APIs
+- Day 10: Public Blog, Testimonials, and Experience sections
 
 See `docs/project-plan.md` for the full adapted plan.

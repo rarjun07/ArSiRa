@@ -7,5 +7,12 @@ async function get(path) {
 }
 
 export function getPortfolioContent() {
-  return Promise.all([get("/about"), get("/skills"), get("/projects")]);
+  return Promise.all([
+    get("/about"),
+    get("/skills"),
+    get("/projects"),
+    get("/blogs"),
+    get("/testimonials"),
+    get("/experience"),
+  ]);
 }
