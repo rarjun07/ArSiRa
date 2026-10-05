@@ -132,6 +132,13 @@ function Overview({ onSelect }) { return <><div className="welcome-banner"><div>
 
 export default function App() {
   const [tokens, setTokens] = useState(readTokens); const [user, setUser] = useState(null); const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const handleTokenRefresh = (event) => setTokens(event.detail);
+    const handleAuthExpired = () => { localStorage.removeItem(TOKEN_KEY); setTokens(null); setUser(null); };
+    window.addEventListener("portfolio-cms-token-refreshed", handleTokenRefresh);
+    window.addEventListener("portfolio-cms-auth-expired", handleAuthExpired);
+    return () => { window.removeEventListener("portfolio-cms-token-refreshed", handleTokenRefresh); window.removeEventListener("portfolio-cms-auth-expired", handleAuthExpired); };
+  }, []);
   useEffect(() => { if (!tokens?.access_token) { setIsLoading(false); return; } getCurrentUser(tokens.access_token).then(setUser).catch(() => { localStorage.removeItem(TOKEN_KEY); setTokens(null); }).finally(() => setIsLoading(false)); }, [tokens]);
   async function finishLogin(nextTokens) { setTokens(nextTokens); setUser(await getCurrentUser(nextTokens.access_token)); }
   function logout() { localStorage.removeItem(TOKEN_KEY); setTokens(null); setUser(null); }

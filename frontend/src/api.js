@@ -1,4 +1,5 @@
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api/v1";
+const TOKEN_KEY = "portfolio_cms_tokens";
 
 function formatApiError(detail, fallback) {
   if (typeof detail === "string") return detail;
@@ -24,6 +25,28 @@ async function request(path, options = {}) {
       ...headers,
     },
   });
+
+  if (response.status === 401 && headers.Authorization && path !== "/auth/refresh") {
+    let storedTokens;
+    try { storedTokens = JSON.parse(localStorage.getItem(TOKEN_KEY)); } catch { storedTokens = null; }
+    if (storedTokens?.refresh_token) {
+      const refreshResponse = await fetch(`${API_BASE_URL}/auth/refresh`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refresh_token: storedTokens.refresh_token }),
+      });
+      if (refreshResponse.ok) {
+        const refreshedTokens = await refreshResponse.json();
+        localStorage.setItem(TOKEN_KEY, JSON.stringify(refreshedTokens));
+        window.dispatchEvent(new CustomEvent("portfolio-cms-token-refreshed", { detail: refreshedTokens }));
+        return request(path, {
+          ...requestOptions,
+          headers: { ...headers, Authorization: `Bearer ${refreshedTokens.access_token}` },
+        });
+      }
+    }
+    window.dispatchEvent(new Event("portfolio-cms-auth-expired"));
+  }
 
   if (!response.ok) {
     const payload = await response.json().catch(() => ({}));
