@@ -14,14 +14,19 @@ const fallbackExperience = [{ title: "Python Fullstack Developer Intern", compan
 
 function Arrow() { return <span aria-hidden="true">↗</span>; }
 
+function ContactIcon({ type }) {
+  const symbols = { email: "@", phone: "☎", whatsapp: "◉", linkedin: "in", github: "GH" };
+  return <span className={`contact-icon contact-icon-${type}`} aria-hidden="true">{symbols[type]}</span>;
+}
+
 function ContactDetails({ about }) {
   const whatsappHref = about.whatsapp_number ? `https://wa.me/${about.whatsapp_number.replace(/\D/g, "")}` : "";
   return <div className="contact-details">
-    {about.email && <a href={`mailto:${about.email}`}><span>Email</span>{about.email}</a>}
-    {about.phone_number && <a href={`tel:${about.phone_number}`}><span>Phone</span>{about.phone_number}</a>}
-    {about.whatsapp_number && <a href={whatsappHref} target="_blank" rel="noreferrer"><span>WhatsApp</span>{about.whatsapp_number}</a>}
-    {about.linkedin_url && <a href={about.linkedin_url} target="_blank" rel="noreferrer"><span>LinkedIn</span>View profile <Arrow /></a>}
-    {about.github_url && <a href={about.github_url} target="_blank" rel="noreferrer"><span>GitHub</span>View repositories <Arrow /></a>}
+    {about.email && <a href={`mailto:${about.email}`}><ContactIcon type="email" /><span className="contact-value"><span>Email</span>{about.email}</span></a>}
+    {about.phone_number && <a href={`tel:${about.phone_number}`}><ContactIcon type="phone" /><span className="contact-value"><span>Phone</span>{about.phone_number}</span></a>}
+    {about.whatsapp_number && <a href={whatsappHref} target="_blank" rel="noreferrer"><ContactIcon type="whatsapp" /><span className="contact-value"><span>WhatsApp</span>{about.whatsapp_number}</span></a>}
+    {about.linkedin_url && <a href={about.linkedin_url} target="_blank" rel="noreferrer"><ContactIcon type="linkedin" /><span className="contact-value"><span>LinkedIn</span>View profile <Arrow /></span></a>}
+    {about.github_url && <a href={about.github_url} target="_blank" rel="noreferrer"><ContactIcon type="github" /><span className="contact-value"><span>GitHub</span>View repositories <Arrow /></span></a>}
   </div>;
 }
 
