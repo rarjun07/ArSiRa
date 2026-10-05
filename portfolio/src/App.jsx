@@ -14,6 +14,17 @@ const fallbackExperience = [{ title: "Python Fullstack Developer Intern", compan
 
 function Arrow() { return <span aria-hidden="true">↗</span>; }
 
+function ContactDetails({ about }) {
+  const whatsappHref = about.whatsapp_number ? `https://wa.me/${about.whatsapp_number.replace(/\D/g, "")}` : "";
+  return <div className="contact-details">
+    {about.email && <a href={`mailto:${about.email}`}><span>Email</span>{about.email}</a>}
+    {about.phone_number && <a href={`tel:${about.phone_number}`}><span>Phone</span>{about.phone_number}</a>}
+    {about.whatsapp_number && <a href={whatsappHref} target="_blank" rel="noreferrer"><span>WhatsApp</span>{about.whatsapp_number}</a>}
+    {about.linkedin_url && <a href={about.linkedin_url} target="_blank" rel="noreferrer"><span>LinkedIn</span>View profile <Arrow /></a>}
+    {about.github_url && <a href={about.github_url} target="_blank" rel="noreferrer"><span>GitHub</span>View repositories <Arrow /></a>}
+  </div>;
+}
+
 function ContactForm() {
   const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [status, setStatus] = useState({ type: "", text: "" });
@@ -54,7 +65,7 @@ export default function App() {
       <section className="journal-section" id="journal"><div className="section-intro"><p className="eyebrow">From the journal</p><h2>Notes from<br /><em>the work.</em></h2></div><div className="journal-grid">{blogs.slice(0, 3).map((blog) => { const isExpanded = expandedBlog === blog.title; return <article className="journal-card" key={blog.title}><p className="project-type">{blog.tags?.[0] || "Building in public"}</p><h3>{blog.title}</h3><p>{blog.excerpt}</p>{isExpanded && <p className="journal-content">{blog.content || blog.excerpt}</p>}<button className="journal-read-more" type="button" onClick={() => setExpandedBlog(isExpanded ? "" : blog.title)}>{isExpanded ? "Show less" : "Read more"} <Arrow /></button></article>; })}</div></section>
       <section className="timeline-section" id="experience"><div className="section-intro"><p className="eyebrow">Experience</p><h2>A timeline<br /><em>in progress.</em></h2></div><div className="timeline-list">{experience.slice(0, 4).map((item) => <article className="timeline-item" key={`${item.company}-${item.title}`}><div className="timeline-date">{item.start_date}<br />{item.end_date || "Present"}</div><div><h3>{item.title}</h3><p className="timeline-company">{item.company}{item.location ? ` · ${item.location}` : ""}</p><p>{item.description}</p></div></article>)}</div></section>
       <section className="testimonial-section"><p className="eyebrow">A good word</p><blockquote>“{testimonials[0].quote}”</blockquote><p className="quote-author">{testimonials[0].name}{testimonials[0].role ? ` · ${testimonials[0].role}` : ""}</p></section>
-      <section className="contact-section" id="contact"><div className="contact-heading"><p className="eyebrow">Have a project in mind?</p><h2>Let&apos;s make<br /><em>something useful.</em></h2></div><ContactForm /></section>
+      <section className="contact-section" id="contact"><div className="contact-heading"><p className="eyebrow">Have a project in mind?</p><h2>Let&apos;s make<br /><em>something useful.</em></h2><ContactDetails about={about} /></div><ContactForm /></section>
     </main>
     <footer className="site-footer"><span>© 2026 Arjun Singh</span><span>{loadError || "Content managed with Portfolio CMS."}</span><a href="#top">Back to top ↑</a></footer>
   </div>;

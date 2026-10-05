@@ -27,6 +27,8 @@ class About(Base, TimestampMixin):
     resume_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     location: Mapped[str | None] = mapped_column(String(120), nullable=True)
     email: Mapped[str | None] = mapped_column(String(255), nullable=True)
+    phone_number: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    whatsapp_number: Mapped[str | None] = mapped_column(String(40), nullable=True)
     github_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
     linkedin_url: Mapped[str | None] = mapped_column(String(500), nullable=True)
 

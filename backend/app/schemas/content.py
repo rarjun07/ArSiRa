@@ -20,6 +20,8 @@ class AboutBase(BaseModel):
     resume_url: str | None = Field(default=None, max_length=500)
     location: str | None = Field(default=None, max_length=120)
     email: str | None = Field(default=None, max_length=255)
+    phone_number: str | None = Field(default=None, max_length=40)
+    whatsapp_number: str | None = Field(default=None, max_length=40)
     github_url: str | None = Field(default=None, max_length=500)
     linkedin_url: str | None = Field(default=None, max_length=500)
 
@@ -36,6 +38,8 @@ class AboutUpdate(BaseModel):
     resume_url: str | None = Field(default=None, max_length=500)
     location: str | None = Field(default=None, max_length=120)
     email: str | None = Field(default=None, max_length=255)
+    phone_number: str | None = Field(default=None, max_length=40)
+    whatsapp_number: str | None = Field(default=None, max_length=40)
     github_url: str | None = Field(default=None, max_length=500)
     linkedin_url: str | None = Field(default=None, max_length=500)
 

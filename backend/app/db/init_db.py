@@ -1,3 +1,5 @@
+from sqlalchemy import text
+
 from app.db.base import Base
 from app.db.session import engine
 from app.models import (
@@ -31,3 +33,5 @@ __all__ = [
 async def create_database_tables() -> None:
     async with engine.begin() as connection:
         await connection.run_sync(Base.metadata.create_all)
+        await connection.execute(text("ALTER TABLE about ADD COLUMN IF NOT EXISTS phone_number VARCHAR(40)"))
+        await connection.execute(text("ALTER TABLE about ADD COLUMN IF NOT EXISTS whatsapp_number VARCHAR(40)"))
