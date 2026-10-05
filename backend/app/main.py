@@ -4,8 +4,8 @@ from fastapi.staticfiles import StaticFiles
 
 from app.api.health import router as health_router
 from app.api.v1.auth import router as auth_router
-from app.api.v1.content import router as content_router
 from app.api.v1.contact import router as contact_router
+from app.api.v1.content import router as content_router
 from app.api.v1.uploads import router as uploads_router
 from app.core.config import settings
 from app.services.uploads import upload_directory

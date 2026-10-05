@@ -15,6 +15,6 @@ Each day should be completed, tested, committed, and pushed before starting the 
 
 Current status:
 
-- Day 13: Deployment-ready public portfolio frontend
+- Day 14: Final tests, builds, and optimization checks
 
 See `docs/project-plan.md` for the full adapted plan.

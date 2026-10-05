@@ -172,3 +172,5 @@ Status: completed with a production portfolio Dockerfile, Nginx SPA serving, Com
 - Optimize images.
 - Run security checks.
 - Polish UI and fix bugs.
+
+Status: completed with backend pytest coverage, API-surface checks, Ruff validation, backend compilation, both React production builds, deployment configuration review, and dependency cleanup.

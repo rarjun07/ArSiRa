@@ -82,3 +82,10 @@ The first admin user can be created with `scripts/create_admin.py`. Passwords ar
 ## Day 3 Content Notes
 
 Content `GET` routes are public so the portfolio frontend can read them. Create, update, and delete routes require a bearer access token from the admin login flow.
+
+## Verification
+
+```bash
+pytest
+ruff check app scripts
+```
