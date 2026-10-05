@@ -164,6 +164,8 @@ Status: completed with production Dockerfiles for FastAPI and the React CMS, Ngi
 - Deploy portfolio frontend.
 - Configure production API URLs and domain.
 
+Status: completed with a production portfolio Dockerfile, Nginx SPA serving, Compose integration, persistent production API URL configuration, and public-site CORS defaults. Actual cloud deployment remains provider-specific.
+
 ### Day 14 - Final Testing & Optimization
 
 - Validate APIs.

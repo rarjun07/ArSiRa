@@ -22,7 +22,7 @@ services:
       APP_ENV: ${APP_ENV:-production}
       DEBUG: ${DEBUG:-false}
       DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-portfolio_cms}
-      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080}
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:8080,http://localhost:8081}
       SECRET_KEY: ${SECRET_KEY:?Set SECRET_KEY before starting the stack}
       ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-30}
       REFRESH_TOKEN_EXPIRE_DAYS: ${REFRESH_TOKEN_EXPIRE_DAYS:-7}
@@ -44,6 +44,17 @@ services:
     restart: unless-stopped
     ports:
       - "${ADMIN_PORT:-8080}:80"
+    depends_on:
+      - backend
+
+  portfolio:
+    build:
+      context: ../portfolio
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:8000/api/v1}
+    restart: unless-stopped
+    ports:
+      - "${PORTFOLIO_PORT:-8081}:80"
     depends_on:
       - backend
 

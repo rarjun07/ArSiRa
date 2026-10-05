@@ -15,6 +15,6 @@ Each day should be completed, tested, committed, and pushed before starting the 
 
 Current status:
 
-- Day 12: Deployment-ready backend and CMS container stack
+- Day 13: Deployment-ready public portfolio frontend
 
 See `docs/project-plan.md` for the full adapted plan.
