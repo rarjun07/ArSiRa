@@ -6,7 +6,16 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.api.dependencies.auth import get_current_admin_user
 from app.db.session import get_db_session
-from app.models.content import About, Blog, Experience, Project, Service, Skill, Testimonial
+from app.models.content import (
+    About,
+    Blog,
+    Education,
+    Experience,
+    Project,
+    Service,
+    Skill,
+    Testimonial,
+)
 from app.models.user import User
 from app.repositories.crud import (
     create_record,
@@ -21,6 +30,9 @@ from app.schemas.content import (
     BlogCreate,
     BlogResponse,
     BlogUpdate,
+    EducationCreate,
+    EducationResponse,
+    EducationUpdate,
     ExperienceCreate,
     ExperienceResponse,
     ExperienceUpdate,
@@ -299,6 +311,53 @@ async def delete_experience(
     if experience is None:
         raise not_found("Experience")
     await delete_record(session, experience)
+
+
+@router.get("/education", response_model=list[EducationResponse])
+async def list_education(session: SessionDep) -> list[Education]:
+    return await list_records(session, Education, order_by=Education.display_order)
+
+
+@router.get("/education/{education_id}", response_model=EducationResponse)
+async def get_education(education_id: int, session: SessionDep) -> Education:
+    education = await get_record(session, Education, education_id)
+    if education is None:
+        raise not_found("Education")
+    return education
+
+
+@router.post("/education", response_model=EducationResponse, status_code=status.HTTP_201_CREATED)
+async def create_education(
+    payload: EducationCreate,
+    session: SessionDep,
+    _current_user: AdminDep,
+) -> Education:
+    return await create_record(session, Education, payload.model_dump())
+
+
+@router.put("/education/{education_id}", response_model=EducationResponse)
+async def update_education(
+    education_id: int,
+    payload: EducationUpdate,
+    session: SessionDep,
+    _current_user: AdminDep,
+) -> Education:
+    education = await get_record(session, Education, education_id)
+    if education is None:
+        raise not_found("Education")
+    return await update_record(session, education, update_payload(payload))
+
+
+@router.delete("/education/{education_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_education(
+    education_id: int,
+    session: SessionDep,
+    _current_user: AdminDep,
+) -> None:
+    education = await get_record(session, Education, education_id)
+    if education is None:
+        raise not_found("Education")
+    await delete_record(session, education)
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 

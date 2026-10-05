@@ -172,6 +172,36 @@ class ExperienceResponse(ExperienceBase, TimestampedResponse):
     pass
 
 
+class EducationBase(BaseModel):
+    degree: str = Field(min_length=2, max_length=160)
+    institution: str = Field(min_length=2, max_length=180)
+    field_of_study: str | None = Field(default=None, max_length=160)
+    location: str | None = Field(default=None, max_length=120)
+    start_date: str = Field(min_length=2, max_length=40)
+    end_date: str | None = Field(default=None, max_length=40)
+    description: str | None = None
+    display_order: int = 0
+
+
+class EducationCreate(EducationBase):
+    pass
+
+
+class EducationUpdate(BaseModel):
+    degree: str | None = Field(default=None, min_length=2, max_length=160)
+    institution: str | None = Field(default=None, min_length=2, max_length=180)
+    field_of_study: str | None = Field(default=None, max_length=160)
+    location: str | None = Field(default=None, max_length=120)
+    start_date: str | None = Field(default=None, min_length=2, max_length=40)
+    end_date: str | None = Field(default=None, max_length=40)
+    description: str | None = None
+    display_order: int | None = None
+
+
+class EducationResponse(EducationBase, TimestampedResponse):
+    pass
+
+
 class TestimonialBase(BaseModel):
     name: str = Field(min_length=2, max_length=120)
     role: str | None = Field(default=None, max_length=160)

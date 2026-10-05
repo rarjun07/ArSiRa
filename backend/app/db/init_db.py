@@ -5,6 +5,7 @@ from app.db.session import engine
 from app.models import (
     About,
     Blog,
+    Education,
     Experience,
     Media,
     Message,
@@ -18,6 +19,7 @@ from app.models import (
 __all__ = [
     "About",
     "Blog",
+    "Education",
     "Experience",
     "Media",
     "Message",

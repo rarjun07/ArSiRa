@@ -91,6 +91,20 @@ class Experience(Base, TimestampMixin):
     is_current: Mapped[bool] = mapped_column(Boolean, default=False)
 
 
+class Education(Base, TimestampMixin):
+    __tablename__ = "education"
+
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    degree: Mapped[str] = mapped_column(String(160), index=True)
+    institution: Mapped[str] = mapped_column(String(180), index=True)
+    field_of_study: Mapped[str | None] = mapped_column(String(160), nullable=True)
+    location: Mapped[str | None] = mapped_column(String(120), nullable=True)
+    start_date: Mapped[str] = mapped_column(String(40))
+    end_date: Mapped[str | None] = mapped_column(String(40), nullable=True)
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
+    display_order: Mapped[int] = mapped_column(Integer, default=0)
+
+
 class Testimonial(Base, TimestampMixin):
     __tablename__ = "testimonials"
 

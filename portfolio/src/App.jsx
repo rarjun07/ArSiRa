@@ -35,14 +35,14 @@ function ContactForm() {
 }
 
 export default function App() {
-  const [content, setContent] = useState({ about: null, skills: [], projects: [], blogs: [], testimonials: [], experience: [] });
+  const [content, setContent] = useState({ about: null, skills: [], projects: [], blogs: [], testimonials: [], experience: [], education: [] });
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState("");
   const [expandedBlog, setExpandedBlog] = useState("");
 
   useEffect(() => {
     getPortfolioContent()
-      .then(([about, skills, projects, blogs, testimonials, experience]) => setContent({ about, skills, projects, blogs, testimonials, experience }))
+      .then(([about, skills, projects, blogs, testimonials, experience, education]) => setContent({ about, skills, projects, blogs, testimonials, experience, education }))
       .catch(() => setLoadError("CMS content is unavailable. Showing the latest saved preview."))
       .finally(() => setIsLoading(false));
   }, []);
@@ -53,9 +53,10 @@ export default function App() {
   const blogs = content.blogs.length ? content.blogs : fallbackBlogs;
   const testimonials = content.testimonials.length ? content.testimonials : fallbackTestimonials;
   const experience = content.experience.length ? content.experience : fallbackExperience;
+  const education = content.education;
 
   return <div className="site-shell">
-    <header className="site-header"><a className="wordmark" href="#top">AR<span>.</span></a><nav aria-label="Primary navigation"><a href="#top">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#journal">Journal</a><a href="#experience">Experience</a><a href="#work">Work</a><a href="#contact">Contact</a></nav><a className="header-link" href="#contact">Let&apos;s talk <Arrow /></a></header>
+    <header className="site-header"><a className="wordmark" href="#top">AR<span>.</span></a><nav aria-label="Primary navigation"><a href="#top">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#journal">Journal</a><a href="#experience">Experience</a><a href="#education">Education</a><a href="#work">Work</a><a href="#contact">Contact</a></nav><a className="header-link" href="#contact">Let&apos;s talk <Arrow /></a></header>
     <main id="top">
       <section className="hero-section"><div className="hero-copy"><p className="eyebrow">Python fullstack developer</p><h1>{about.headline || "Useful software, carefully built."}</h1><p className="hero-description">{about.summary}</p><div className="hero-actions"><a className="button button-dark" href="#work">See selected work <Arrow /></a><a className="text-link" href="#about">A little about me <span aria-hidden="true">↓</span></a></div></div><div className="hero-visual" aria-label="Abstract illustration of connected software systems"><div className="visual-grid" /><div className="visual-card visual-card-main"><span className="card-label">CURRENTLY BUILDING</span><strong>Portfolio CMS</strong><span className="card-line" /><small>React / FastAPI / PostgreSQL</small></div><div className="visual-card visual-card-side"><span className="side-dot" /><span>{isLoading ? "CMS<br />loading" : "API<br />ready"}</span></div><div className="visual-orbit orbit-one" /><div className="visual-orbit orbit-two" /></div></section>
       <section className="signal-bar"><p>Based in India</p><span>✦</span><p>Open to meaningful problems</p><span>✦</span><p>2026 / Present</p></section>
@@ -64,6 +65,7 @@ export default function App() {
       <section className="skills-section" id="skills"><div className="section-intro"><p className="eyebrow">Skills and tools</p><h2>Built with<br /><em>careful tools.</em></h2></div><div className="skills-content"><p>The technologies I use to turn thoughtful ideas into reliable products.</p><div className="skill-meters">{skills.map((skill) => <div className="skill-meter" key={skill.name}><div className="skill-meter-label"><span>{skill.name}</span><span>{skill.proficiency}%</span></div><div className="skill-meter-track"><span style={{ width: `${skill.proficiency}%` }} /></div></div>)}</div></div></section>
       <section className="journal-section" id="journal"><div className="section-intro"><p className="eyebrow">From the journal</p><h2>Notes from<br /><em>the work.</em></h2></div><div className="journal-grid">{blogs.slice(0, 3).map((blog) => { const isExpanded = expandedBlog === blog.title; return <article className="journal-card" key={blog.title}><p className="project-type">{blog.tags?.[0] || "Building in public"}</p><h3>{blog.title}</h3><p>{blog.excerpt}</p>{isExpanded && <p className="journal-content">{blog.content || blog.excerpt}</p>}<button className="journal-read-more" type="button" onClick={() => setExpandedBlog(isExpanded ? "" : blog.title)}>{isExpanded ? "Show less" : "Read more"} <Arrow /></button></article>; })}</div></section>
       <section className="timeline-section" id="experience"><div className="section-intro"><p className="eyebrow">Experience</p><h2>A timeline<br /><em>in progress.</em></h2></div><div className="timeline-list">{experience.slice(0, 4).map((item) => <article className="timeline-item" key={`${item.company}-${item.title}`}><div className="timeline-date">{item.start_date}<br />{item.end_date || "Present"}</div><div><h3>{item.title}</h3><p className="timeline-company">{item.company}{item.location ? ` · ${item.location}` : ""}</p><p>{item.description}</p></div></article>)}</div></section>
+      <section className="education-section" id="education"><div className="section-intro"><p className="eyebrow">Education</p><h2>The foundation<br /><em>behind the work.</em></h2></div><div className="education-list">{education.length ? education.map((item) => <article className="education-item" key={`${item.institution}-${item.degree}`}><div className="education-date">{item.start_date}<br />{item.end_date || "Present"}</div><div><h3>{item.degree}</h3><p className="education-institution">{item.institution}{item.field_of_study ? ` · ${item.field_of_study}` : ""}{item.location ? ` · ${item.location}` : ""}</p>{item.description && <p>{item.description}</p>}</div></article>) : <p className="education-empty">Education details can be added from Portfolio CMS.</p>}</div></section>
       <section className="testimonial-section"><p className="eyebrow">A good word</p><blockquote>“{testimonials[0].quote}”</blockquote><p className="quote-author">{testimonials[0].name}{testimonials[0].role ? ` · ${testimonials[0].role}` : ""}</p></section>
       <section className="contact-section" id="contact"><div className="contact-heading"><p className="eyebrow">Have a project in mind?</p><h2>Let&apos;s make<br /><em>something useful.</em></h2><ContactDetails about={about} /></div><ContactForm /></section>
     </main>

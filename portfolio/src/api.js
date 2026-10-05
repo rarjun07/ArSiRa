@@ -14,6 +14,7 @@ export function getPortfolioContent() {
     get("/blogs"),
     get("/testimonials"),
     get("/experience"),
+    get("/education"),
   ]);
 }
 
