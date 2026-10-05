@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { deleteContent, getContent, getCurrentUser, login, saveContent } from "./api";
+import { deleteContent, getContent, getCurrentUser, login, saveContent, uploadImage } from "./api";
 
 const TOKEN_KEY = "portfolio_cms_tokens";
 const contentAreas = [
@@ -59,7 +59,7 @@ const blankSkill = { name: "", category: "", icon_url: "", proficiency: "", disp
 function SkillsEditor({ token, onBack }) {
   const [items, setItems] = useState([]); const [form, setForm] = useState(blankSkill); const [editingId, setEditingId] = useState(null); const [error, setError] = useState(""); const [message, setMessage] = useState(""); const [isLoading, setIsLoading] = useState(true); const [isSaving, setIsSaving] = useState(false);
   const load = () => getContent("/skills", token).then(setItems).catch((e) => setError(e.message)).finally(() => setIsLoading(false));
-  useEffect(load, [token]); const update = (event) => setForm({ ...form, [event.target.name]: event.target.type === "checkbox" ? event.target.checked : event.target.value });
+  useEffect(() => { load(); }, [token]); const update = (event) => setForm({ ...form, [event.target.name]: event.target.type === "checkbox" ? event.target.checked : event.target.value });
   function edit(item) { setEditingId(item.id); setForm({ ...item, proficiency: item.proficiency ?? "" }); setMessage(""); }
   function reset() { setEditingId(null); setForm(blankSkill); }
   async function submit(event) { event.preventDefault(); setIsSaving(true); setError(""); setMessage(""); const payload = { ...form, proficiency: form.proficiency === "" ? null : Number(form.proficiency), display_order: Number(form.display_order) }; try { await saveContent(editingId ? `/skills/${editingId}` : "/skills", editingId ? "PUT" : "POST", payload, token); setMessage(editingId ? "Skill updated." : "Skill created."); reset(); await load(); } catch (e) { setError(e.message); } finally { setIsSaving(false); } }
@@ -71,7 +71,7 @@ const blankProject = { title: "", slug: "", summary: "", description: "", image_
 function ProjectsEditor({ token, onBack }) {
   const [items, setItems] = useState([]); const [form, setForm] = useState(blankProject); const [editingId, setEditingId] = useState(null); const [error, setError] = useState(""); const [message, setMessage] = useState(""); const [isLoading, setIsLoading] = useState(true); const [isSaving, setIsSaving] = useState(false);
   const load = () => getContent("/projects", token).then(setItems).catch((e) => setError(e.message)).finally(() => setIsLoading(false));
-  useEffect(load, [token]); const update = (event) => setForm({ ...form, [event.target.name]: event.target.type === "checkbox" ? event.target.checked : event.target.value });
+  useEffect(() => { load(); }, [token]); const update = (event) => setForm({ ...form, [event.target.name]: event.target.type === "checkbox" ? event.target.checked : event.target.value });
   function edit(item) { setEditingId(item.id); setForm({ ...item, tech_stack: item.tech_stack.join(", ") }); setMessage(""); }
   function reset() { setEditingId(null); setForm(blankProject); }
   async function submit(event) { event.preventDefault(); setIsSaving(true); setError(""); setMessage(""); const payload = { ...form, tech_stack: form.tech_stack.split(",").map((value) => value.trim()).filter(Boolean), display_order: Number(form.display_order) }; try { await saveContent(editingId ? `/projects/${editingId}` : "/projects", editingId ? "PUT" : "POST", payload, token); setMessage(editingId ? "Project updated." : "Project created."); reset(); await load(); } catch (e) { setError(e.message); } finally { setIsSaving(false); } }
@@ -90,7 +90,7 @@ function CollectionEditor({ token, type, onBack }) {
   const definition = collectionDefinitions[type];
   const [items, setItems] = useState([]); const [form, setForm] = useState(definition.blank); const [editingId, setEditingId] = useState(null); const [error, setError] = useState(""); const [message, setMessage] = useState(""); const [isLoading, setIsLoading] = useState(true); const [isSaving, setIsSaving] = useState(false);
   const load = () => getContent(`/${definition.endpoint}`, token).then(setItems).catch((e) => setError(e.message)).finally(() => setIsLoading(false));
-  useEffect(load, [token, definition.endpoint]);
+  useEffect(() => { load(); }, [token, definition.endpoint]);
   function update(event) { const { name, value, type: inputType, checked } = event.target; setForm({ ...form, [name]: inputType === "checkbox" ? checked : value }); }
   function edit(item) { const next = { ...definition.blank, ...item }; for (const field of definition.fields) if (field.kind === "tags") next[field.name] = (item[field.name] || []).join(", "); if (item.published_at) next.published_at = item.published_at.slice(0, 16); setEditingId(item.id); setForm(next); setMessage(""); }
   function reset() { setEditingId(null); setForm({ ...definition.blank }); }
@@ -105,6 +105,12 @@ function CollectionField({ field, value, onChange }) {
   return <TextField label={field.label} name={field.name} value={value} onChange={onChange} multiline={field.multiline} required={field.required} placeholder={field.placeholder} />;
 }
 
+function MediaEditor({ token, onBack }) {
+  const [file, setFile] = useState(null); const [uploaded, setUploaded] = useState(null); const [error, setError] = useState(""); const [isUploading, setIsUploading] = useState(false);
+  async function submit(event) { event.preventDefault(); if (!file) return; setError(""); setUploaded(null); setIsUploading(true); try { setUploaded(await uploadImage(file, token)); setFile(null); event.target.reset(); } catch (e) { setError(e.message); } finally { setIsUploading(false); } }
+  return <EditorLayout title="Media" description="Upload images for your portfolio content." onBack={onBack}><div className="media-panel"><form className="media-form" onSubmit={submit}><div className="upload-dropzone"><span className="content-icon">M</span><h2>Upload an image</h2><p>JPEG, PNG, WebP, or GIF up to 5 MB.</p><input id="media-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif" required onChange={(event) => setFile(event.target.files?.[0] || null)} /><label htmlFor="media-file" className="secondary-button">Choose image</label>{file && <span className="selected-file">{file.name}</span>}</div><button className="primary-button" disabled={!file || isUploading} type="submit">{isUploading ? "Uploading..." : "Upload image"}</button>{uploaded && <p className="success-message" role="status">Uploaded successfully: {uploaded.original_name}</p>}{error && <p className="error-message" role="alert">{error}</p>}</form></div></EditorLayout>;
+}
+
 function EditorLayout({ title, description, onBack, children }) { return <><header className="editor-topbar"><span className="brand-mark small">AR</span><span>Portfolio CMS</span></header><main className="editor-page"><EditorHeader title={title} description={description} onBack={onBack} />{children}</main></>; }
 function Loading() { return <p className="empty-state">Loading...</p>; }
 function EmptyState({ text }) { return <p className="empty-state">{text}</p>; }
@@ -117,6 +123,7 @@ function Dashboard({ user, token, onLogout }) {
   if (section === "Skills") return <DashboardFrame user={user} section={section} onSelect={setSection} onLogout={onLogout}><SkillsEditor token={token} onBack={() => setSection("Overview")} /></DashboardFrame>;
   if (section === "Projects") return <DashboardFrame user={user} section={section} onSelect={setSection} onLogout={onLogout}><ProjectsEditor token={token} onBack={() => setSection("Overview")} /></DashboardFrame>;
   if (collectionDefinitions[section]) return <DashboardFrame user={user} section={section} onSelect={setSection} onLogout={onLogout}><CollectionEditor token={token} type={section} onBack={() => setSection("Overview")} /></DashboardFrame>;
+  if (section === "Media") return <DashboardFrame user={user} section={section} onSelect={setSection} onLogout={onLogout}><MediaEditor token={token} onBack={() => setSection("Overview")} /></DashboardFrame>;
   return <DashboardFrame user={user} section={section} onSelect={setSection} onLogout={onLogout}><Overview onSelect={setSection} /></DashboardFrame>;
 }
 

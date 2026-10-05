@@ -51,3 +51,16 @@ export function deleteContent(path, accessToken) {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
 }
+
+export async function uploadImage(file, accessToken) {
+  const body = new FormData();
+  body.append("file", file);
+  const response = await fetch(`${API_BASE_URL}/upload/image`, {
+    method: "POST",
+    headers: { Authorization: `Bearer ${accessToken}` },
+    body,
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.detail || "Unable to upload the image.");
+  return data;
+}
