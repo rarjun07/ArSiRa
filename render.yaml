@@ -1,0 +1,50 @@
+databases:
+  - name: portfolio-cms-db
+    plan: free
+    databaseName: portfolio_cms
+    user: portfolio_cms
+
+services:
+  - type: web
+    name: portfolio-cms-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install .
+    startCommand: sh scripts/start.sh
+    healthCheckPath: /health
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: DEBUG
+        value: "false"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: portfolio-cms-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        value: https://portfolio-cms-admin.onrender.com,https://portfolio-cms-site.onrender.com
+      - key: PUBLIC_UPLOAD_BASE_URL
+        value: https://portfolio-cms-api.onrender.com/uploads
+      - key: UPLOAD_DIR
+        value: /opt/render/project/src/backend/uploads
+
+  - type: static
+    name: portfolio-cms-admin
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://portfolio-cms-api.onrender.com/api/v1
+
+  - type: static
+    name: portfolio-cms-site
+    rootDir: portfolio
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_BASE_URL
+        value: https://portfolio-cms-api.onrender.com/api/v1

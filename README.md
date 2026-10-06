@@ -100,3 +100,26 @@ Current status:
 - Review deployment configuration, clean dependencies, and polish UI bugs.
 
 See `docs/project-plan.md` for the full adapted plan.
+
+## Deploy On Render
+
+The repository includes `render.yaml` for a Render Blueprint with four resources:
+
+- Render PostgreSQL database: `portfolio-cms-db`
+- FastAPI API: `portfolio-cms-api`
+- React CMS admin panel: `portfolio-cms-admin`
+- React public portfolio: `portfolio-cms-site`
+
+To deploy:
+
+1. Push the repository to GitHub.
+2. In Render, choose **New > Blueprint** and select this repository.
+3. Review the resources and enter the generated admin credentials when prompted.
+4. Apply the Blueprint and wait for the database, API, CMS, and portfolio builds to finish.
+5. Create the first admin user from the API service shell:
+
+```bash
+python scripts/create_admin.py --email admin@example.com --username admin --full-name "Arjun Singh"
+```
+
+The Blueprint uses the default `*.onrender.com` service URLs. If you add custom domains, update `CORS_ORIGINS`, `PUBLIC_UPLOAD_BASE_URL`, and both frontend `VITE_API_BASE_URL` values in Render, then redeploy.
