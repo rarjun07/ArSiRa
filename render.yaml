@@ -31,8 +31,9 @@ services:
       - key: UPLOAD_DIR
         value: /opt/render/project/src/backend/uploads
 
-  - type: static
+  - type: web
     name: portfolio-cms-admin
+    runtime: static
     rootDir: frontend
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
@@ -40,8 +41,9 @@ services:
       - key: VITE_API_BASE_URL
         value: https://portfolio-cms-api.onrender.com/api/v1
 
-  - type: static
+  - type: web
     name: portfolio-cms-site
+    runtime: static
     rootDir: portfolio
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
