@@ -28,6 +28,8 @@ services:
         value: https://portfolio-cms-admin.onrender.com,https://portfolio-cms-site.onrender.com
       - key: PUBLIC_UPLOAD_BASE_URL
         value: https://portfolio-cms-api.onrender.com/uploads
+      - key: UPLOAD_MOUNT_PATH
+        value: /uploads
       - key: UPLOAD_DIR
         value: /opt/render/project/src/backend/uploads
 

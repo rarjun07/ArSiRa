@@ -32,6 +32,7 @@ class Settings(BaseSettings):
         validation_alias="REFRESH_TOKEN_EXPIRE_DAYS",
     )
     upload_dir: str = Field(default="uploads", validation_alias="UPLOAD_DIR")
+    upload_mount_path: str = Field(default="/uploads", validation_alias="UPLOAD_MOUNT_PATH")
     public_upload_base_url: str = Field(
         default="/uploads",
         validation_alias="PUBLIC_UPLOAD_BASE_URL",

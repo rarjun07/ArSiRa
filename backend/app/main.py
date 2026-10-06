@@ -33,7 +33,7 @@ def create_app() -> FastAPI:
     app.include_router(contact_router, prefix=settings.api_v1_prefix)
     app.include_router(uploads_router, prefix=settings.api_v1_prefix)
     app.mount(
-        settings.public_upload_base_url,
+        settings.upload_mount_path,
         StaticFiles(directory=settings.upload_dir),
         name="uploads",
     )
