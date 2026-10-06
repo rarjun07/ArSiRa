@@ -37,6 +37,18 @@ class Settings(BaseSettings):
         default="/uploads",
         validation_alias="PUBLIC_UPLOAD_BASE_URL",
     )
+    bootstrap_admin_email: str | None = Field(
+        default=None,
+        validation_alias="BOOTSTRAP_ADMIN_EMAIL",
+    )
+    bootstrap_admin_username: str | None = Field(
+        default=None,
+        validation_alias="BOOTSTRAP_ADMIN_USERNAME",
+    )
+    bootstrap_admin_password: str | None = Field(
+        default=None,
+        validation_alias="BOOTSTRAP_ADMIN_PASSWORD",
+    )
 
     model_config = SettingsConfigDict(
         env_file=".env",
