@@ -11,6 +11,7 @@ const contentAreas = [
   { label: "Blogs", icon: "B", detail: "Published articles" },
   { label: "Services", icon: "V", detail: "What you offer" },
   { label: "Testimonials", icon: "T", detail: "Client feedback" },
+  { label: "Messages", icon: "✉", detail: "Contact form inbox" },
   { label: "Media", icon: "M", detail: "Uploaded images" },
 ];
 
@@ -114,6 +115,17 @@ function MediaEditor({ token, onBack }) {
   return <EditorLayout title="Media" description="Upload images for your portfolio content." onBack={onBack}><div className="media-panel"><form className="media-form" onSubmit={submit}><div className="upload-dropzone"><span className="content-icon">M</span><h2>Upload an image</h2><p>JPEG, PNG, WebP, or GIF up to 5 MB.</p><input id="media-file" type="file" accept="image/jpeg,image/png,image/webp,image/gif" required onChange={(event) => setFile(event.target.files?.[0] || null)} /><label htmlFor="media-file" className="secondary-button">Choose image</label>{file && <span className="selected-file">{file.name}</span>}</div><button className="primary-button" disabled={!file || isUploading} type="submit">{isUploading ? "Uploading..." : "Upload image"}</button>{uploaded && <div className="upload-result"><p className="success-message" role="status">Uploaded successfully: {uploaded.original_name}</p><label className="field"><span>Public image URL</span><input readOnly value={resolveMediaUrl(uploaded.public_url)} onFocus={(event) => event.target.select()} /></label><p className="muted">Copy this URL into About, then paste it into Profile image URL.</p></div>}{error && <p className="error-message" role="alert">{error}</p>}</form></div></EditorLayout>;
 }
 
+function MessagesEditor({ token, onBack }) {
+  const [items, setItems] = useState([]); const [error, setError] = useState(""); const [isLoading, setIsLoading] = useState(true);
+  const load = () => getContent("/contact", token).then(setItems).catch((e) => setError(e.message)).finally(() => setIsLoading(false));
+  useEffect(() => { load(); }, [token]);
+  async function markRead(item) {
+    try { const updated = await saveContent(`/contact/${item.id}/read`, "PATCH", {}, token); setItems((current) => current.map((entry) => entry.id === updated.id ? updated : entry)); }
+    catch (e) { setError(e.message); }
+  }
+  return <EditorLayout title="Messages" description="Read messages sent through your portfolio contact form." onBack={onBack}><div className="messages-panel list-panel"><div className="list-heading"><h2>Inbox</h2><span>{items.filter((item) => !item.is_read).length} new</span></div>{isLoading ? <Loading /> : items.length === 0 ? <EmptyState text="No messages yet. New contact form submissions will appear here." /> : items.map((item) => <article className={`message-card ${item.is_read ? "" : "unread"}`} key={item.id}><header><div><strong>{item.subject}</strong><span>{item.name} · <a href={`mailto:${item.email}`}>{item.email}</a></span></div><time dateTime={item.created_at}>{new Date(item.created_at).toLocaleString()}</time></header><p>{item.message}</p>{!item.is_read && <button type="button" onClick={() => markRead(item)}>Mark as read</button>}</article>)}{error && <p className="error-message" role="alert">{error}</p>}</div></EditorLayout>;
+}
+
 function EditorLayout({ title, description, onBack, children }) { return <><header className="editor-topbar"><span className="brand-mark small">AR</span><span>Portfolio CMS</span></header><main className="editor-page"><EditorHeader title={title} description={description} onBack={onBack} />{children}</main></>; }
 function Loading() { return <p className="empty-state">Loading...</p>; }
 function EmptyState({ text }) { return <p className="empty-state">{text}</p>; }
@@ -127,6 +139,7 @@ function Dashboard({ user, token, onLogout }) {
   if (section === "Projects") return <DashboardFrame user={user} section={section} onSelect={setSection} onLogout={onLogout}><ProjectsEditor token={token} onBack={() => setSection("Overview")} /></DashboardFrame>;
   if (collectionDefinitions[section]) return <DashboardFrame user={user} section={section} onSelect={setSection} onLogout={onLogout}><CollectionEditor token={token} type={section} onBack={() => setSection("Overview")} /></DashboardFrame>;
   if (section === "Media") return <DashboardFrame user={user} section={section} onSelect={setSection} onLogout={onLogout}><MediaEditor token={token} onBack={() => setSection("Overview")} /></DashboardFrame>;
+  if (section === "Messages") return <DashboardFrame user={user} section={section} onSelect={setSection} onLogout={onLogout}><MessagesEditor token={token} onBack={() => setSection("Overview")} /></DashboardFrame>;
   return <DashboardFrame user={user} section={section} onSelect={setSection} onLogout={onLogout}><Overview onSelect={setSection} /></DashboardFrame>;
 }
 

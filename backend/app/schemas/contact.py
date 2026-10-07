@@ -1,4 +1,6 @@
-from pydantic import BaseModel, EmailStr, Field
+from datetime import datetime
+
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class ContactCreate(BaseModel):
@@ -10,3 +12,15 @@ class ContactCreate(BaseModel):
 
 class ContactResponse(BaseModel):
     detail: str
+
+
+class MessageResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    name: str
+    email: EmailStr
+    subject: str
+    message: str
+    is_read: bool
+    created_at: datetime
